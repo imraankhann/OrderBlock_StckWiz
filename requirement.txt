@@ -1,9 +1,7 @@
-pip3 install requests &&
-pip3 install pytz &&
-pip3 install numpy && 
-pip3  install pandas && 
-pip3 install pandas && 
-pip3 install yfinance && 
-pip3 install python-telegram-bot &&
-pip install --upgrade urllib3
+requests
+pytz
+numpy 
+pandas
+yfinance
+python-telegram-bot
 
