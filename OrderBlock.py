@@ -84,53 +84,54 @@ if intTime==9 and intMin in range(15,45):
 else: 
     print("Time not between 9:15 AM - 9:30 AM to show the levels...!")
 
-data = yf.download("^NSEI", period="1mo", interval="5m")
-
-def get_live_price(data):
-    """Fetch the current live price of an index from the last row of data."""
-    return float(data['Close'].iloc[-1])
-
-live_price = round(get_live_price(data),2)
-
-print("live nifty price : ", live_price)
-
-def get_nearest_strike_price(live_price, step):
-    """Calculate the nearest strike price for a given index price."""
-    return round(live_price / step) * step
-
-nearest_strike_nf = get_nearest_strike_price(live_price, 50)
-
-print("Nearest Nifty Strike : ", nearest_strike_nf)
-
 #Keep Running below code from 9AM to 3PM
-if intTime >= 9 and intTime < 15:
+if intTime >= 9 and intTime < 23:
 #if intTime >= 18 and intTime < 54:
-    while(intTime<15):
+    while(intTime<23):
         c = datetime.now(tz=pytz.timezone('Asia/Kolkata'))
         runTime = c.strftime('%H:%M:%S')
         current_hour = int(c.strftime('%H'))
         current_minute = int(c.strftime('%M'))
-        if current_hour>15:
-            print(f"Exiting the script at {runTime}, as it's past 12 PM.")
+        if current_hour>23:
+            print(f"Exiting the script at {runTime}, as it's past 3 PM.")
             break;
+        
+        data = yf.download("^NSEI", period="1mo", interval="5m")
+
+        def get_live_price(data):
+            """Fetch the current live price of an index from the last row of data."""
+            return float(data['Close'].iloc[-1])
+
+        live_price = round(get_live_price(data),2)
+
+        def get_nearest_strike_price(live_price, step):
+            """Calculate the nearest strike price for a given index price."""
+            return round(live_price / step) * step
+
+        nearest_strike_nf = get_nearest_strike_price(live_price, 50)
+
+        nse_ce_risky_range = nse_ce_risky_levels - 10
+        nse_ce_safe_range = nse_ce_safe_levels + 10
+        nse_pe_risky_range = nse_pe_risky_levels + 10
+        nse_pe_safe_range = nse_pe_safe_levels - 10
+
         niftyLastPrice = int(live_price)
         print("NIFTY CMP : ",niftyLastPrice)
         print(f'==========================\n'
               f'Running task at:", {runTime}\n'
               f'NIFTY CMP : {niftyLastPrice}\n'
-              f'NIFTY SUPPLY LOW LEVEL : {nse_ce_risky_levels}\n'
-              f'NIFTY SUPPLY HIGH LEVEL : {nse_ce_safe_levels}\n'
-              f'NIFTY DEMAND HIGH LEVEL : {nse_pe_risky_levels}\n'
-              f'NIFTY DEMAND LOW LEVEL : {nse_pe_safe_levels}\n'
+              f'NIFTY SUPPLY LOW LEVEL : {nse_ce_risky_range}\n'
+              f'NIFTY SUPPLY HIGH LEVEL : {nse_ce_safe_range}\n'
+              f'NIFTY DEMAND HIGH LEVEL : {nse_pe_risky_range}\n'
+              f'NIFTY DEMAND LOW LEVEL : {nse_pe_safe_range}\n'
               f'==========================\n')
-        
-        
+
+        print("Nearest Nifty Strike : ", nearest_strike_nf)
         print("Run Time : ", runTime)
         counter= counter+1
         print("Counter : ", counter)
         
-    
-        if nse_ce_risky_levels <= niftyLastPrice <= nse_ce_safe_levels :
+        if nse_ce_risky_range <= niftyLastPrice <= nse_ce_safe_range:
             buy = 'PE'
             message=(f'==========================\n'
                      f'Time : {dt[0]+"-"+runTime}\n'
@@ -149,7 +150,7 @@ if intTime >= 9 and intTime < 15:
                      f'==========================\n')
             asyncio.run(send_telegram_notification(message)) 
 
-        if nse_pe_risky_levels <= niftyLastPrice <= nse_pe_safe_levels :
+        if nse_pe_risky_range <= niftyLastPrice <= nse_pe_safe_range :
             buy = "CE"
             message=(f'==========================\n'
                     f'Time : {dt[0]+"-"+runTime}\n'
@@ -158,7 +159,7 @@ if intTime >= 9 and intTime < 15:
                     f'==========================\n'
                     f'NIFYT CMP : {niftyLastPrice}\n'
                     f'==========================\n'
-                    f'NIFTY TRADING NEAR RISKY CE BO LEVEL:{nse_pe_risky_levels}\n'
+                    f'NIFTY TRADING NEAR  CE BO LEVEL:{nse_pe_risky_levels}\n'
                     f'==========================\n'
                     f'CHOOSE STRIKE : {nearest_strike_nf} {buy}\n'
                     f'==========================\n'
