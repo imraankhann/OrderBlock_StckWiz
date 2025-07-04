@@ -141,7 +141,7 @@ async def monitor_nifty():
     ce_range = range(levels['ce_risky'] - 10, levels['ce_safe'] + 10)
     pe_range = range(levels['pe_safe'] - 10, levels['pe_risky'] + 10)
     prev_ohlc = get_previous_day_ohlc()
-
+    print("prev_ohlc : ", prev_ohlc)
     if prev_ohlc is None:
         print("❌ Couldn't fetch previous day OHLC. Exiting.")
         return
