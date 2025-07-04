@@ -85,14 +85,14 @@ else:
     print("Time not between 9:15 AM - 9:30 AM to show the levels...!")
 
 #Keep Running below code from 9AM to 3PM
-if intTime >= 9 and intTime < 15:
+if intTime >= 9 and intTime < 18:
 #if intTime >= 18 and intTime < 54:
-    while(intTime<15):
+    while(intTime<18):
         c = datetime.now(tz=pytz.timezone('Asia/Kolkata'))
         runTime = c.strftime('%H:%M:%S')
         current_hour = int(c.strftime('%H'))
         current_minute = int(c.strftime('%M'))
-        if current_hour>15:
+        if current_hour>18:
             print(f"Exiting the script at {runTime}, as it's past 3 PM.")
             break;
         
@@ -167,7 +167,10 @@ if intTime >= 9 and intTime < 15:
                     f'==========================\n'
                     f'BOT IS NOT SEBI REG..!\n'
                     f'==========================\n')
-            asyncio.run(send_telegram_notification(message))         
-   
+            asyncio.run(send_telegram_notification(message))     
 
         time.sleep(180)
+
+
+
+
