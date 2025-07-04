@@ -5,4 +5,5 @@ pandas
 yfinance
 python-telegram-bot
 nsetools
+nsepy
 
