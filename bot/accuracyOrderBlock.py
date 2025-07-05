@@ -68,10 +68,6 @@ def get_nifty_fallback():
 def get_nearest_strike(price):
     return round(price / 50) * 50
 
-from nsepy import get_history
-from datetime import timedelta, date
-import yfinance as yf
-
 def get_previous_day_ohlc():
     today = date.today()
 
