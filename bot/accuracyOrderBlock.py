@@ -134,8 +134,8 @@ def log_signal(timestamp, price, strike, signal_type):
 
 async def monitor_nifty():
     levels = load_levels()
-    ce_range = range(levels['ce_risky'] - 10, levels['ce_safe'] + 10)
-    pe_range = range(levels['pe_safe'] - 10, levels['pe_risky'] + 10)
+    selling_range = range(levels['ce_risky'] - 10, levels['ce_safe'] + 10)
+    buying_range = range(levels['pe_safe'] - 10, levels['pe_risky'] + 10)
     prev_ohlc = get_previous_day_ohlc()
     print("prev_ohlc : ", prev_ohlc)
     if prev_ohlc is None:
@@ -170,7 +170,7 @@ async def monitor_nifty():
         timestamp = now.strftime('%Y-%m-%d %H:%M:%S')
 
         if is_valid_breakout(price, prev_ohlc):
-            if int(price) in ce_range and f"PE-{strike}" not in sent_signals:
+            if int(price) in selling_range and f"PE-{strike}" not in sent_signals:
                 message = (
                     f"[{timestamp}] PE Signal 🚨\n"
                     f"NIFTY CMP: {price}\n"
@@ -181,7 +181,7 @@ async def monitor_nifty():
                 log_signal(timestamp, price, strike, "PE")
                 sent_signals.add(f"PE-{strike}")
 
-            elif int(price) in pe_range and f"CE-{strike}" not in sent_signals:
+            elif int(price) in buying_range and f"CE-{strike}" not in sent_signals:
                 message = (
                     f"[{timestamp}] CE Signal 🚨\n"
                     f"NIFTY CMP: {price}\n"
