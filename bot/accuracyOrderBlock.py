@@ -14,7 +14,7 @@ from datetime import timedelta, date
 TELEGRAM_BOT_TOKEN = "5817461626:AAHp1IIIMkQGWFTqIuu84lYOoxlO8KS7CZo"
 TELEGRAM_CHAT_ID = "@swingTradeScreenedStocks"
 TIMEZONE = 'Asia/Kolkata'
-SLEEP_INTERVAL = 180  # in seconds
+SLEEP_INTERVAL = 300  # in seconds
 LOG_DIR = './signal_logs'
 os.makedirs(LOG_DIR, exist_ok=True)
 
