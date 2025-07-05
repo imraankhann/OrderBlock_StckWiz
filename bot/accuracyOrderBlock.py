@@ -70,7 +70,6 @@ def get_nearest_strike(price):
 
 def get_previous_day_ohlc():
     today = date.today()
-
     # Try NSEPy first
     for i in range(1, 8):
         try_date = today - timedelta(days=i)
@@ -148,7 +147,7 @@ async def monitor_nifty():
         current_time = now.time()
 
         market_start = datetime.strptime("09:15:00", "%H:%M:%S").time()
-        market_end = datetime.strptime("15:30:00", "%H:%M:%S").time()
+        market_end = datetime.strptime("15:15:00", "%H:%M:%S").time()
 
         if current_time < market_start:
             print(f"🕒 {now.strftime('%H:%M:%S')} — Market not open yet.")
