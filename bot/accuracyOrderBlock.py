@@ -11,8 +11,8 @@ from nsepy import get_history
 from datetime import timedelta, date
 
 # =================== CONFIG ===================
-TELEGRAM_BOT_TOKEN = "your_bot_token_here"
-TELEGRAM_CHAT_ID = "@your_chat_id_or_channel"
+TELEGRAM_BOT_TOKEN = "5817461626:AAHp1IIIMkQGWFTqIuu84lYOoxlO8KS7CZo"
+TELEGRAM_CHAT_ID = "@swingTradeScreenedStocks"
 TIMEZONE = 'Asia/Kolkata'
 SLEEP_INTERVAL = 180  # in seconds
 LOG_DIR = './signal_logs'
