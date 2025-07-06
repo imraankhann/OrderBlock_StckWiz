@@ -11,8 +11,10 @@ from nsepy import get_history
 from datetime import timedelta, date
 
 # =================== CONFIG ===================
-TELEGRAM_BOT_TOKEN = "5817461626:AAHp1IIIMkQGWFTqIuu84lYOoxlO8KS7CZo"
-TELEGRAM_CHAT_ID = "@swingTradeScreenedStocks"
+# TELEGRAM_BOT_TOKEN = "5817461626:AAHp1IIIMkQGWFTqIuu84lYOoxlO8KS7CZo"
+# TELEGRAM_CHAT_ID = "@swingTradeScreenedStocks"
+TELEGRAM_BOT_TOKEN = "6377307246:AAEuJAlBiQgDQEa03yNmKQJmZbXyQ0WINOk"
+TELEGRAM_CHAT_ID = "-996001230"
 TIMEZONE = 'Asia/Kolkata'
 SLEEP_INTERVAL = 300  # in seconds
 LOG_DIR = './signal_logs'
@@ -166,15 +168,19 @@ async def monitor_nifty():
             continue
 
         strike = get_nearest_strike(price)
-        timestamp = now.strftime('%Y-%m-%d %H:%M:%S')
+        timestamp = now.strftime('%d-%m-%Y %H:%M:%S')
 
         if is_valid_breakout(price, prev_ohlc):
             if int(price) in selling_range and f"PE-{strike}" not in sent_signals:
                 message = (
+                    f"======================\n"
                     f"[{timestamp}] PE Signal 🚨\n"
                     f"NIFTY CMP: {price}\n"
                     f"BUY PE {strike}\n"
-                    f"Block Range: {levels['ce_risky']} - {levels['ce_safe']}"
+                    f"Block Range: {levels['ce_risky']} - {levels['ce_safe']}\n"
+                    f"NOTE: We are not SEBI Reg..! This is Intraday Trade.\n"
+                    f"Trade at your own risk..!\n"
+                    f"======================\n"
                 )
                 await send_telegram(message)
                 log_signal(timestamp, price, strike, "PE")
@@ -182,10 +188,15 @@ async def monitor_nifty():
 
             elif int(price) in buying_range and f"CE-{strike}" not in sent_signals:
                 message = (
+                    f"======================\n"
                     f"[{timestamp}] CE Signal 🚨\n"
                     f"NIFTY CMP: {price}\n"
                     f"BUY CE {strike}\n"
-                    f"Block Range: {levels['pe_safe']} - {levels['pe_risky']}"
+                    f"Block Range: {levels['pe_safe']} - {levels['pe_risky']}\n"
+                    f"NOTE: We are not SEBI Reg..! This is Intraday Trade.\n"
+                    f"Trade at your own risk..!\n"
+                    f"======================\n"
+                    
                 )
                 await send_telegram(message)
                 log_signal(timestamp, price, strike, "CE")
