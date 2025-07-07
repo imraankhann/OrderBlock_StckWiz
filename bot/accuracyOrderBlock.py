@@ -60,7 +60,7 @@ def get_nifty_fallback():
             cached_yf_data = yf.download("^NSEI", period="1d", interval="5m")
             last_download_time = now
         if cached_yf_data is not None and not cached_yf_data.empty:
-            spot = float(cached_yf_data['Close'].iloc[-1].item())
+            spot = round(float(cached_yf_data['Close'].iloc[-1].item()),2)
             print(f"🔁 Fallback YF Price: {spot}")
             return spot
     except Exception as e:
