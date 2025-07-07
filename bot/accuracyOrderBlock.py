@@ -82,10 +82,10 @@ def get_previous_day_ohlc():
             if not df.empty:
                 print(f"✅ NSEPY OHLC for {try_date}")
                 return {
-                    'Open': df['Open'].iloc[0],
-                    'High': df['High'].iloc[0],
-                    'Low': df['Low'].iloc[0],
-                    'Close': df['Close'].iloc[0],
+                    'Open': round(df['Open'].iloc[0],2),
+                    'High': round(df['High'].iloc[0],2),
+                    'Low': round(df['Low'].iloc[0],2),
+                    'Close': round(df['Close'].iloc[0],2),
                 }
         except Exception as e:
             print(f"❌ NSEPY failed for {try_date}: {e}")
