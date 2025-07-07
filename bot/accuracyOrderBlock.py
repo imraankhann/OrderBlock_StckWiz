@@ -60,7 +60,7 @@ def get_nifty_fallback():
             cached_yf_data = yf.download("^NSEI", period="1d", interval="5m")
             last_download_time = now
         if cached_yf_data is not None and not cached_yf_data.empty:
-            spot = float(cached_yf_data['Close'].iloc[-1])
+            spot = float(cached_yf_data['Close'].iloc[-1].item())
             print(f"🔁 Fallback YF Price: {spot}")
             return spot
     except Exception as e:
@@ -112,12 +112,21 @@ def get_previous_day_ohlc():
 
 def is_valid_breakout(price, ohlc):
     try:
-        low = float(ohlc['Low'])
-        high = float(ohlc['High'])
-        return low < price < high
+        low = ohlc['Low']
+        high = ohlc['High']
+
+        # Handle case where low/high might be Series (not scalar)
+        if isinstance(low, pd.Series):
+            low = low.iloc[0]
+        if isinstance(high, pd.Series):
+            high = high.iloc[0]
+
+        return float(low) < price < float(high)
+
     except Exception as e:
         print("❌ Error in is_valid_breakout:", e)
         return False
+
 
 
 def load_levels():
