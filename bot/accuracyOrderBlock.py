@@ -111,7 +111,14 @@ def get_previous_day_ohlc():
 
 
 def is_valid_breakout(price, ohlc):
-    return ohlc['Low'] < price < ohlc['High']
+    try:
+        low = float(ohlc['Low'])
+        high = float(ohlc['High'])
+        return low < price < high
+    except Exception as e:
+        print("❌ Error in is_valid_breakout:", e)
+        return False
+
 
 def load_levels():
     df = pd.read_csv('./levels_for_orderblock.csv')
