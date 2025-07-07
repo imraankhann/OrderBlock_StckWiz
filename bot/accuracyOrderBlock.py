@@ -55,7 +55,8 @@ cached_yf_data = None
 def get_nifty_fallback():
     global last_download_time, cached_yf_data
     try:
-        now = datetime.now()
+        tz = pytz.timezone(TIMEZONE)
+        now = datetime.now(tz)
         if not last_download_time or (now - last_download_time).seconds > SLEEP_INTERVAL:
             cached_yf_data = yf.download("^NSEI", period="1d", interval="5m")
             last_download_time = now
