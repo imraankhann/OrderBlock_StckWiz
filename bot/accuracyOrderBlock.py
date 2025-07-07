@@ -56,7 +56,7 @@ def get_nifty_fallback():
     global last_download_time, cached_yf_data
     try:
         now = datetime.now()
-        if not last_download_time or (now - last_download_time).seconds > 900:
+        if not last_download_time or (now - last_download_time).seconds > SLEEP_INTERVAL:
             cached_yf_data = yf.download("^NSEI", period="1d", interval="5m")
             last_download_time = now
         if cached_yf_data is not None and not cached_yf_data.empty:
@@ -66,7 +66,7 @@ def get_nifty_fallback():
     except Exception as e:
         print("❌ YFinance fallback also failed:", e)
         return None
-
+    
 def get_nearest_strike(price):
     return round(price / 50) * 50
 
