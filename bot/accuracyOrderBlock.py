@@ -61,7 +61,7 @@ def get_nifty_fallback():
             last_download_time = now
         if cached_yf_data is not None and not cached_yf_data.empty:
             spot = round(float(cached_yf_data['Close'].iloc[-1].item()),2)
-            print(f"🔁 Fallback YF Price: {spot}")
+            print(f"🔁 cur_time: {now.strftime('%H:%M:%S')} Fallback YF Price: {spot}")
             return spot
     except Exception as e:
         print("❌ YFinance fallback also failed:", e)
