@@ -50,19 +50,11 @@ def get_nifty_spot():
         return get_nifty_fallback()
 
 def get_nifty_fallback():
-    global last_download_time, cached_yf_data
-    try:
-        now = datetime.now(tz)
-        if not last_download_time or (now - last_download_time).seconds > SLEEP_INTERVAL:
-            cached_yf_data = yf.download("NSEI^", period="1d", interval="5m")
-            last_download_time = now
-        if cached_yf_data is not None and not cached_yf_data.empty:
-            spot = round(float(cached_yf_data['Close'].iloc[-1].item()), 2)
-            print(f"🔁 cur_time: {now.strftime('%H:%M:%S')} Fallback YF Price: {spot}")
-            return spot
-    except Exception as e:
-        print("❌ YFinance fallback failed:", e)
-    return None
+   data = yf.download("^NSEI", period="1d", interval="1m")
+   if data.empty:
+        return None
+   cmp = float(data['Close'].iloc[-1]) 
+   return round(cmp, 2)
 
 def get_nearest_strike(price):
     return round(price / 50) * 50
@@ -98,7 +90,7 @@ async def monitor_nifty():
         current_time = now.time()
 
         market_start = datetime.strptime("09:15:00", "%H:%M:%S").time()
-        market_end = datetime.strptime("18:45:00", "%H:%M:%S").time()
+        market_end = datetime.strptime("15:15:00", "%H:%M:%S").time()
 
         if current_time < market_start:
             print(f"🕒 {now.strftime('%H:%M:%S')} — Market not open yet.")
