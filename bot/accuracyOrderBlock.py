@@ -142,8 +142,10 @@ async def monitor_nifty():
             sent_signals.add(f"CE-{strike}")
         else:
             print(f"⏳ {timestamp}: CMP {price} not in zone.")
-
+        print(f"[{timestamp}] Current Price: {price}, Strike: {strike}")
+        print(f"[{timestamp}] waiting for {SLEEP_INTERVAL} seconds...\n")
         await asyncio.sleep(SLEEP_INTERVAL)
+        print(f"[{timestamp}] completed {SLEEP_INTERVAL} seconds...\n")
 
 # ================ RUN =================
 
